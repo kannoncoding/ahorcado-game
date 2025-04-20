@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ahorcado Game</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Juego del Ahorcado</h1>
+  </header>
+
+  <main>
+    <!-- Sección: Registro de jugador -->
+    <section id="registro">
+      <input type="text" id="nombreJugador" placeholder="Ingresa tu nombre" />
+      <button id="btnRegistrar">Registrar</button>
+    </section>
+
+    <!-- Sección: Selección de categoría -->
+    <section id="categoria">
+      <label for="selectCategoria">Selecciona una categoría:</label>
+      <select id="selectCategoria">
+        <option value="">-- Elige una categoría --</option>
+      </select>
+      <button id="btnIniciarJuego">Iniciar Juego</button>
+    </section>
+
+    <!-- Sección: Juego activo -->
+    <section id="juego" style="display: none;">
+      <div id="puntaje">Puntos: 10</div>
+      <div id="palabraSecreta">_ _ _ _ _</div>
+      <div id="letrasIngresadas"></div>
+      <input type="text" id="inputLetra" maxlength="1" />
+      <button id="btnIntentar">Intentar</button>
+      <div id="mensajeResultado"></div>
+
+      <!-- Imagen/representación del ahorcado -->
+      <div id="ahorcadoVisual"></div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
