@@ -1,0 +1,6 @@
+{
+    "animales": ["elefante", "jirafa", "cangrejo", "murcielago", "rinoceronte"],
+    "paises": ["costarica", "nicaragua", "españa", "canada", "argentina"],
+    "capitales": ["tokio", "paris", "berlin", "londres", "madrid"]
+  }
+  
