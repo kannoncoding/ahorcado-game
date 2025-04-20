@@ -26,5 +26,9 @@ body {
     height: 200px;
     margin: 20px auto;
     background-color: #ddd;
+    font-size: 4em;
+    margin-top: 20px;
+    transition: all 0.3s ease;
   }
+
   
