@@ -1,151 +1,214 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Variables globales
     let palabraOculta = [];
     let letrasUsadas = [];
     let puntaje = 10;
-
+  
     let palabrasPorCategoria = {};
     let palabraSeleccionada = "";
     let categoriaActual = "";
-
-    function actualizarAhorcado() {
-        const ahorcadoDiv = document.getElementById("ahorcadoVisual");
-        const estados = [
-          "😵",       // 0
-          "😖",       // 1
-          "😟",       // 2
-          "😕",       // 3
-          "😐",       // 4
-          "😶",       // 5
-          "🙂",       // 6
-          "😀",       // 7
-          "😁",       // 8
-          "😃",       // 9
-          "😄"        // 10
-        ];
-        ahorcadoDiv.textContent = estados[puntaje];
-      }
-      
-
-        fetch("./data/palabras.json")
-        .then(response => response.json())
-        .then(data => {
-            palabrasPorCategoria = data;
-            cargarCategorias(data);
-        })
-        .catch(error => {
-            console.error("Error al cargar el archivo de palabras:", error);
-        });
-
-        function cargarCategorias(data) {
-        const select = document.getElementById("selectCategoria");
-        for (const categoria in data) {
-            const option = document.createElement("option");
-            option.value = categoria;
-            option.textContent = categoria.charAt(0).toUpperCase() + categoria.slice(1);
-            select.appendChild(option);
-        }
-        }
-
-
+  
+    let jugadores = [];
+    let jugadorActual = null;
+  
     const btnRegistrar = document.getElementById("btnRegistrar");
     const btnIniciarJuego = document.getElementById("btnIniciarJuego");
     const btnIntentar = document.getElementById("btnIntentar");
   
+    // =========================
+    // CARGA DE DATOS Y CATEGORÍAS
+    // =========================
+  
+    fetch("./data/palabras.json")
+      .then(response => response.json())
+      .then(data => {
+        palabrasPorCategoria = data;
+        cargarCategorias(data);
+      })
+      .catch(error => {
+        console.error("Error al cargar el archivo de palabras:", error);
+      });
+  
+    function cargarCategorias(data) {
+      const select = document.getElementById("selectCategoria");
+      for (const categoria in data) {
+        const option = document.createElement("option");
+        option.value = categoria;
+        option.textContent = categoria.charAt(0).toUpperCase() + categoria.slice(1);
+        select.appendChild(option);
+      }
+    }
+  
+    // =========================
+    // FUNCIONES DE INTERFAZ Y JUEGO
+    // =========================
+  
+    function mostrarPalabraOculta(palabra) {
+      palabraOculta = palabra.split("").map(() => "_");
+      actualizarPalabraEnPantalla();
+    }
+  
+    function actualizarPalabraEnPantalla() {
+      document.getElementById("palabraSecreta").textContent = palabraOculta.join(" ");
+    }
+  
+    function actualizarAhorcado() {
+      const ahorcadoDiv = document.getElementById("ahorcadoVisual");
+      const estados = [
+        "😵", "😖", "😟", "😕", "😐",
+        "😶", "🙂", "😀", "😁", "😃", "😄"
+      ];
+      ahorcadoDiv.textContent = estados[puntaje];
+    }
+  
+    function bloquearEntrada() {
+      document.getElementById("inputLetra").disabled = true;
+      document.getElementById("btnIntentar").disabled = true;
+    }
+  
+    // =========================
+    // JUGADORES Y REGISTRO
+    // =========================
+  
+    function guardarJugadores() {
+      localStorage.setItem("jugadoresAhorcado", JSON.stringify(jugadores));
+    }
+  
+    function cargarJugadores() {
+      const data = localStorage.getItem("jugadoresAhorcado");
+      if (data) {
+        jugadores = JSON.parse(data);
+      }
+    }
+  
+    function registrarPartida(resultado) {
+      if (!jugadorActual) return;
+  
+      const partida = {
+        categoria: categoriaActual,
+        palabra: palabraSeleccionada,
+        resultado: resultado,
+        puntosFinales: puntaje
+      };
+  
+      jugadorActual.partidas.push(partida);
+      guardarJugadores();
+      mostrarHistorialJugador();
+    }
+  
+    function mostrarHistorialJugador() {
+      const div = document.getElementById("historialJugador");
+      if (!jugadorActual || !jugadorActual.partidas.length) {
+        div.textContent = "Sin historial.";
+        return;
+      }
+  
+      let html = `<h3>Historial de ${jugadorActual.nombre}:</h3><ul>`;
+      jugadorActual.partidas.forEach(p => {
+        html += `<li>[${p.resultado.toUpperCase()}] ${p.categoria} – "${p.palabra}" (${p.puntosFinales} pts)</li>`;
+      });
+      html += "</ul>";
+      div.innerHTML = html;
+    }
+  
+    // =========================
+    // EVENTOS DE BOTONES
+    // =========================
+  
     btnRegistrar.addEventListener("click", () => {
-      // Próximamente: registrar jugador
+      const nombre = document.getElementById("nombreJugador").value.trim();
+      if (!nombre) {
+        alert("Ingresa un nombre válido.");
+        return;
+      }
+  
+      const jugadorExistente = jugadores.find(j => j.nombre === nombre);
+      if (jugadorExistente) {
+        jugadorActual = jugadorExistente;
+      } else {
+        jugadorActual = { nombre: nombre, partidas: [] };
+        jugadores.push(jugadorActual);
+      }
+  
+      guardarJugadores();
+      alert(`Jugador registrado: ${jugadorActual.nombre}`);
+      mostrarHistorialJugador();
     });
   
     btnIniciarJuego.addEventListener("click", () => {
-        const select = document.getElementById("selectCategoria");
-        categoriaActual = select.value;
-      
-        if (!categoriaActual) {
-          alert("Debes seleccionar una categoría.");
-          return;
-        }
-      
-        const listaPalabras = palabrasPorCategoria[categoriaActual];
-        palabraSeleccionada = listaPalabras[Math.floor(Math.random() * listaPalabras.length)];
-        
-        mostrarPalabraOculta(palabraSeleccionada);
-        document.getElementById("juego").style.display = "block";
-
-        //reiniciar valores
-        puntaje = 10;
-        letrasUsadas = [];
-        document.getElementById("puntaje").textContent = `Puntos: ${puntaje}`;
-        document.getElementById("letrasIngresadas").textContent = "";
-        document.getElementById("mensajeResultado").textContent = "";
-        document.getElementById("inputLetra").disabled = false;
-        document.getElementById("btnIntentar").disabled = false;
-        actualizarAhorcado();
-        
-
-      });
-
-      //metodo para mostrar palabra oculta
-      function mostrarPalabraOculta(palabra) {
-        palabraOculta = palabra.split("").map(() => "_");
-        actualizarPalabraEnPantalla();
+      const select = document.getElementById("selectCategoria");
+      categoriaActual = select.value;
+  
+      if (!categoriaActual) {
+        alert("Debes seleccionar una categoría.");
+        return;
       }
-      
-      function actualizarPalabraEnPantalla() {
-        document.getElementById("palabraSecreta").textContent = palabraOculta.join(" ");
-      }
-      
-      
-      //metodo para intentar el boton intentar
+  
+      const listaPalabras = palabrasPorCategoria[categoriaActual];
+      palabraSeleccionada = listaPalabras[Math.floor(Math.random() * listaPalabras.length)];
+  
+      // Reiniciar valores
+      puntaje = 10;
+      letrasUsadas = [];
+      mostrarPalabraOculta(palabraSeleccionada);
+  
+      document.getElementById("puntaje").textContent = `Puntos: ${puntaje}`;
+      document.getElementById("letrasIngresadas").textContent = "";
+      document.getElementById("mensajeResultado").textContent = "";
+      document.getElementById("inputLetra").disabled = false;
+      document.getElementById("btnIntentar").disabled = false;
+      document.getElementById("juego").style.display = "block";
+      actualizarAhorcado();
+    });
+  
     btnIntentar.addEventListener("click", () => {
-  const input = document.getElementById("inputLetra");
-  const letra = input.value.toLowerCase();
-  input.value = "";
-
-  if (!letra.match(/^[a-zñáéíóúü]$/i)) {
-    alert("Ingresa una letra válida.");
-    return;
-  }
-
-  if (letrasUsadas.includes(letra)) {
-    alert("Ya intentaste con esa letra.");
-    return;
-  }
-
-  letrasUsadas.push(letra);
-  document.getElementById("letrasIngresadas").textContent = "Letras usadas: " + letrasUsadas.join(", ");
-
-  if (palabraSeleccionada.includes(letra)) {
-    // Letra correcta
-    palabraSeleccionada.split("").forEach((char, index) => {
-      if (char === letra) {
-        palabraOculta[index] = letra;
+      const input = document.getElementById("inputLetra");
+      const letra = input.value.toLowerCase();
+      input.value = "";
+  
+      if (!letra.match(/^[a-zñáéíóúü]$/i)) {
+        alert("Ingresa una letra válida.");
+        return;
+      }
+  
+      if (letrasUsadas.includes(letra)) {
+        alert("Ya intentaste con esa letra.");
+        return;
+      }
+  
+      letrasUsadas.push(letra);
+      document.getElementById("letrasIngresadas").textContent = "Letras usadas: " + letrasUsadas.join(", ");
+  
+      if (palabraSeleccionada.includes(letra)) {
+        // Letra correcta
+        palabraSeleccionada.split("").forEach((char, index) => {
+          if (char === letra) {
+            palabraOculta[index] = letra;
+          }
+        });
+  
+        actualizarPalabraEnPantalla();
+  
+        if (!palabraOculta.includes("_")) {
+          document.getElementById("mensajeResultado").textContent = "¡Ganaste!";
+          registrarPartida("victoria");
+          bloquearEntrada();
+        }
+      } else {
+        // Letra incorrecta
+        puntaje--;
+        document.getElementById("puntaje").textContent = `Puntos: ${puntaje}`;
+        actualizarAhorcado();
+  
+        if (puntaje <= 0) {
+          document.getElementById("mensajeResultado").textContent = `¡Perdiste! La palabra era: ${palabraSeleccionada}`;
+          registrarPartida("derrota");
+          bloquearEntrada();
+        }
       }
     });
-
-    actualizarPalabraEnPantalla();
-
-    if (!palabraOculta.includes("_")) {
-      document.getElementById("mensajeResultado").textContent = "¡Ganaste!";
-      bloquearEntrada();
-    }
-
-  } else {
-    // Letra incorrecta
-    puntaje--;
-    document.getElementById("puntaje").textContent = `Puntos: ${puntaje}`;
-    actualizarAhorcado();
-
-    if (puntaje <= 0) {
-      document.getElementById("mensajeResultado").textContent = `¡Perdiste! La palabra era: ${palabraSeleccionada}`;
-      bloquearEntrada();
-    }
-  }
-});
-//metodo bloquear entrada
-function bloquearEntrada() {
-    document.getElementById("inputLetra").disabled = true;
-    document.getElementById("btnIntentar").disabled = true;
-  }
   
-
-});
+    // Inicializar jugadores al cargar la página
+    cargarJugadores();
+  });
   

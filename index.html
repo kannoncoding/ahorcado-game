@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ahorcado Game</title>
+  <title>Juego del Ahorcado</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -12,32 +12,41 @@
   </header>
 
   <main>
-    <!-- Sección: Registro de jugador -->
-    <section id="registro">
-      <input type="text" id="nombreJugador" placeholder="Ingresa tu nombre" />
-      <button id="btnRegistrar">Registrar</button>
-    </section>
+    <section id="contenedorJuego">
+      
+      <!-- 🧑 Registro de jugador -->
+      <fieldset id="registro">
+        <legend>Jugador</legend>
+        <label for="nombreJugador">Nombre:</label>
+        <input type="text" id="nombreJugador" placeholder="Ingresa tu nombre" />
+        <button id="btnRegistrar">Registrar</button>
+      </fieldset>
 
-    <!-- Sección: Selección de categoría -->
-    <section id="categoria">
-      <label for="selectCategoria">Selecciona una categoría:</label>
-      <select id="selectCategoria">
-        <option value="">-- Elige una categoría --</option>
-      </select>
-      <button id="btnIniciarJuego">Iniciar Juego</button>
-    </section>
+      <!-- 📚 Selección de categoría -->
+      <fieldset id="categoria">
+        <legend>Categoría</legend>
+        <label for="selectCategoria">Selecciona una categoría:</label>
+        <select id="selectCategoria">
+          <option value="">-- Elige una categoría --</option>
+        </select>
+        <button id="btnIniciarJuego">Iniciar Juego</button>
+      </fieldset>
 
-    <!-- Sección: Juego activo -->
-    <section id="juego" style="display: none;">
-      <div id="puntaje">Puntos: 10</div>
-      <div id="palabraSecreta">_ _ _ _ _</div>
-      <div id="letrasIngresadas"></div>
-      <input type="text" id="inputLetra" maxlength="1" />
-      <button id="btnIntentar">Intentar</button>
-      <div id="mensajeResultado"></div>
+      <!-- 🎮 Zona de juego -->
+      <section id="juego" style="display: none;">
+        <div id="puntaje">Puntos: 10</div>
+        <div id="palabraSecreta">_ _ _ _ _</div>
+        <div id="letrasIngresadas"></div>
+        <label for="inputLetra">Ingresa una letra:</label>
+        <input type="text" id="inputLetra" maxlength="1" />
+        <button id="btnIntentar">Intentar</button>
+        <div id="mensajeResultado"></div>
+        <div id="ahorcadoVisual"></div>
+      </section>
 
-      <!-- Imagen/representación del ahorcado -->
-      <div id="ahorcadoVisual"></div>
+      <!-- 🗂️ Historial -->
+      <section id="historialJugador" aria-live="polite"></section>
+
     </section>
   </main>
 
