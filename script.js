@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnRegistrar = document.getElementById("btnRegistrar");
     const btnIniciarJuego = document.getElementById("btnIniciarJuego");
     const btnIntentar = document.getElementById("btnIntentar");
+    const btnReiniciar = document.getElementById("btnReiniciar");
   
     // =========================
     // CARGA DE DATOS Y CATEGORÍAS
@@ -134,6 +135,11 @@ document.addEventListener("DOMContentLoaded", () => {
       alert(`Jugador registrado: ${jugadorActual.nombre}`);
       mostrarHistorialJugador();
     });
+
+    btnReiniciar.addEventListener("click", () => {
+        document.getElementById("juego").style.display = "none";
+        document.getElementById("inputLetra").value = "";
+      });
   
     btnIniciarJuego.addEventListener("click", () => {
       const select = document.getElementById("selectCategoria");
@@ -191,6 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
         if (!palabraOculta.includes("_")) {
           document.getElementById("mensajeResultado").textContent = "¡Ganaste!";
+          document.getElementById("mensajeResultado").style.color = "var(--correct)";
           registrarPartida("victoria");
           bloquearEntrada();
         }
@@ -202,6 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
         if (puntaje <= 0) {
           document.getElementById("mensajeResultado").textContent = `¡Perdiste! La palabra era: ${palabraSeleccionada}`;
+          document.getElementById("mensajeResultado").style.color = "var(--danger)";
           registrarPartida("derrota");
           bloquearEntrada();
         }
