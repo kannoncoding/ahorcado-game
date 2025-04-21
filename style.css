@@ -112,4 +112,22 @@
     text-align: left;
     font-size: 0.9em;
   }
+
+  #notaÑ button {
+    background-color: transparent;
+    border: none;
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 1em;
+    cursor: pointer;
+    text-decoration: underline;
+    padding: 0 4px;
+  }
+  
+  #notaÑ button:hover {
+    color: var(--fg);
+    text-decoration: none;
+  }
+  
+  
   

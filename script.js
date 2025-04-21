@@ -215,7 +215,23 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
-  
+
+    // letra N
+
+    const botonÑ = document.getElementById("botonÑ");
+botonÑ.addEventListener("click", () => {
+  navigator.clipboard.writeText("ñ")
+    .then(() => {
+      botonÑ.textContent = "¡copiado!";
+      setTimeout(() => {
+        botonÑ.textContent = "ñ";
+      }, 1000);
+    })
+    .catch(err => {
+      console.error("Error al copiar la ñ:", err);
+    });
+});
+
     // Inicializar jugadores al cargar la página
     cargarJugadores();
   });

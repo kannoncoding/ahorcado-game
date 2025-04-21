@@ -1,6 +1,33 @@
 {
-    "animales": ["elefante", "jirafa", "cangrejo", "murcielago", "rinoceronte"],
-    "paises": ["costarica", "nicaragua", "españa", "canada", "argentina"],
-    "capitales": ["tokio", "paris", "berlin", "londres", "madrid"]
+    "animales": [
+      "perro", "gato", "elefante", "jirafa", "rinoceronte", "hipopotamo", "tigre", "leon", "cebra", "cangrejo",
+      "murcielago", "ballena", "delfin", "tiburon", "serpiente", "lagarto", "iguana", "camaleon", "mono", "oso",
+      "panda", "lobo", "zorro", "ardilla", "conejo", "cabra", "vaca", "cerdo", "gallina", "pato"
+    ],
+    "paises": [
+      "costarica", "nicaragua", "guatemala", "mexico", "panama", "honduras", "colombia", "venezuela", "peru", "chile",
+      "argentina", "uruguay", "brasil", "bolivia", "ecuador", "paraguay", "españa", "alemania", "italia", "francia",
+      "portugal", "inglaterra", "canada", "estadosunidos", "china", "japon", "india", "australia", "suecia", "noruega"
+    ],
+    "capitales": [
+      "sanjose", "managua", "guatemala", "mexico", "panama", "tegucigalpa", "bogota", "caracas", "lima", "santiago",
+      "buenosaires", "montevideo", "brasilia", "lapaz", "quito", "asuncion", "madrid", "berlin", "roma", "paris",
+      "lisboa", "londres", "ottawa", "washington", "beijing", "tokio", "nuevadelhi", "canberra", "estocolmo", "oslo"
+    ],
+    "frutas, vegetales y verduras": [
+      "manzana", "pera", "banana", "sandia", "melon", "uva", "fresa", "mango", "papaya", "piña",
+      "naranja", "limon", "mandarina", "kiwi", "coco", "zanahoria", "lechuga", "tomate", "cebolla", "pepino",
+      "pimiento", "espinaca", "coliflor", "brocoli", "repollo", "berenjena", "apio", "ajo", "rabanito", "remolacha"
+    ],
+    "marcas de carros": [
+      "Toyota", "Honda", "Hyundai", "Kia", "Chevrolet", "Ford", "Mazda", "Nissan", "Volkswagen", "Renault",
+      "Peugeot", "Citroën", "Subaru", "Suzuki", "Mitsubishi", "Lexus", "BMW", "Mercedes", "Audi", "Porsche",
+      "Ferrari", "Lamborghini", "Bugatti", "Tesla", "Jeep", "Dodge", "Chrysler", "Volvo", "Skoda", "Fiat"
+    ],
+    "nombres del parte del cuerpo": [
+      "cabeza", "cuello", "hombro", "brazo", "codo", "muñeca", "mano", "dedo", "pecho", "espalda",
+      "cintura", "cadera", "pierna", "rodilla", "tobillo", "pie", "nariz", "boca", "ojo", "ceja",
+      "pestana", "oreja", "menton", "barbilla", "lengua", "diente", "paladar", "cerebro", "corazon", "higado"
+    ]
   }
   
