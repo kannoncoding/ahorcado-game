@@ -15,6 +15,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const btnIniciarJuego = document.getElementById("btnIniciarJuego");
     const btnIntentar = document.getElementById("btnIntentar");
     const btnReiniciar = document.getElementById("btnReiniciar");
+
+    const selectorJugador = document.getElementById("selectorJugador");
+      selectorJugador.addEventListener("change", () => {
+        const nombre = selectorJugador.value;
+        generarTablaHistorial(nombre);
+      });
+
   
     // =========================
     // CARGA DE DATOS Y CATEGORÍAS
@@ -98,10 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   
     function mostrarHistorialJugador() {
-      const div = document.getElementById("historialJugador");
-      if (!jugadorActual || !jugadorActual.partidas.length) {
-        div.textContent = "Sin historial.";
-        return;
+      generarTablaHistorial();
       }
   
       let html = `<h3>Historial de ${jugadorActual.nombre}:</h3><ul>`;
@@ -111,6 +115,75 @@ document.addEventListener("DOMContentLoaded", () => {
       html += "</ul>";
       div.innerHTML = html;
     }
+
+    //Funcion para actualizar seleccion de jugadores
+    function actualizarSelectorJugadores() {
+      const select = document.getElementById("selectorJugador");
+      select.innerHTML = `<option value="">-- Todos los jugadores --</option>`;
+      jugadores.forEach(j => {
+        const opt = document.createElement("option");
+        opt.value = j.nombre;
+        opt.textContent = j.nombre;
+        select.appendChild(opt);
+      });
+    }
+    
+
+    //Funcion para construir tabla historial
+
+    function generarTablaHistorial(jugadorFiltrado = "") {
+      const wrapper = document.getElementById("tablaHistorialWrapper");
+      if (jugadores.length === 0) {
+        wrapper.innerHTML = "<p>No hay jugadores registrados aún.</p>";
+        return;
+      }
+    
+      // Recolectar todas las palabras únicas jugadas
+      const palabrasUnicas = new Set();
+      jugadores.forEach(j => {
+        j.partidas.forEach(p => palabrasUnicas.add(p.palabra));
+      });
+      const palabras = Array.from(palabrasUnicas);
+    
+      // Crear cabecera de la tabla
+      let html = "<table><thead><tr><th>Palabra</th>";
+      jugadores.forEach(j => {
+        if (!jugadorFiltrado || j.nombre === jugadorFiltrado) {
+          html += `<th>${j.nombre}</th>`;
+        }
+      });
+      html += "</tr></thead><tbody>";
+    
+      // Crear filas con los resultados por palabra
+      palabras.forEach(palabra => {
+        html += `<tr><td>${palabra}</td>`;
+        jugadores.forEach(j => {
+          if (!jugadorFiltrado || j.nombre === jugadorFiltrado) {
+            const partida = j.partidas.find(p => p.palabra === palabra);
+            if (partida) {
+              const clase = partida.resultado === "victoria" ? "victoria" : "derrota";
+              html += `<td class="${clase}">${partida.puntosFinales} pts</td>`;
+            } else {
+              html += "<td>-</td>";
+            }
+          }
+        });
+        html += "</tr>";
+      });
+    
+      // Fila de totales
+      html += `<tr><td><strong>Total</strong></td>`;
+      jugadores.forEach(j => {
+        if (!jugadorFiltrado || j.nombre === jugadorFiltrado) {
+          const total = j.partidas.reduce((sum, p) => sum + p.puntosFinales, 0);
+          html += `<td><strong>${total} pts</strong></td>`;
+        }
+      });
+      html += "</tr></tbody></table>";
+    
+      wrapper.innerHTML = html;
+    }
+    
   
     // =========================
     // EVENTOS DE BOTONES
@@ -132,6 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   
       guardarJugadores();
+      actualizarSelectorJugadores();
       alert(`Jugador registrado: ${jugadorActual.nombre}`);
       mostrarHistorialJugador();
     });

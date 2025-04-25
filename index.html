@@ -47,7 +47,18 @@
       </section>
 
       <!-- 🗂️ Historial -->
-      <section id="historialJugador" aria-live="polite"></section>
+      <section id="historialJugador">
+        <h3>Historial de Partidas</h3>
+        <label for="selectorJugador">Ver historial individual:</label>
+        <select id="selectorJugador">
+          <option value="">-- Todos los jugadores --</option>
+        </select>
+      
+        <div id="tablaHistorialWrapper">
+          <!-- Aquí va la tabla generada dinámicamente -->
+        </div>
+      </section>
+      
 
       <div id="notaÑ">
         💡 ¡Acá tienes la <button id="botonÑ" title="Haz clic para copiar">ñ</button> si no la tienes en tu teclado!
