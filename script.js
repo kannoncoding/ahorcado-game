@@ -75,6 +75,20 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btnIntentar").disabled = true;
   }
 
+  const btnReiniciarSesion = document.getElementById("btnReiniciarSesion");
+btnReiniciarSesion.addEventListener("click", () => {
+  if (confirm("¿Estás seguro de que deseas borrar todo el historial de partidas y reiniciar la sesión?")) {
+    localStorage.removeItem("jugadoresAhorcado");
+    jugadores = [];
+    jugadorActual = null;
+    palabrasUsadasGlobalmente.clear();
+    actualizarSelectorJugadores();
+    generarTablaHistorial();
+    alert("Sesión reiniciada. Ya puedes comenzar una nueva partida desde cero.");
+  }
+});
+
+
   // =========================
   // JUGADORES Y REGISTRO
   // =========================
