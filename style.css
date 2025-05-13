@@ -91,10 +91,12 @@
   }
   
   #letrasIngresadas {
-    font-size: 0.95em;
+    font-size: 2em;
     color: var(--neutral);
-    margin-top: 10px;
+    margin: 20px 0;
+    font-weight: bold;
   }
+  
   
   #historialJugador {
     background-color: #222;
