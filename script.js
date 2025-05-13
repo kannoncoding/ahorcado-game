@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   // Variables globales
+  let palabrasUsadasGlobalmente = new Set();
   let palabraOculta = [];
   let letrasUsadas = [];
   let puntaje = 10;
@@ -84,9 +85,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function cargarJugadores() {
     const data = localStorage.getItem("jugadoresAhorcado");
-    if (data) {
-      jugadores = JSON.parse(data);
-    }
+  if (data) {
+    jugadores = JSON.parse(data);
+    jugadores.forEach(j => {
+      j.partidas.forEach(p => {
+        palabrasUsadasGlobalmente.add(p.palabra);
+      });
+    });
+  }
   }
 
   function registrarPartida(resultado) {
@@ -97,11 +103,16 @@ document.addEventListener("DOMContentLoaded", () => {
       palabra: palabraSeleccionada,
       resultado: resultado,
       puntosFinales: puntaje
+
+      
     };
 
     jugadorActual.partidas.push(partida);
     guardarJugadores();
     mostrarHistorialJugador();
+
+    palabrasUsadasGlobalmente.add(palabraSeleccionada);
+
   }
 
   function mostrarHistorialJugador() {
@@ -203,7 +214,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const listaPalabras = palabrasPorCategoria[categoriaActual];
-    palabraSeleccionada = listaPalabras[Math.floor(Math.random() * listaPalabras.length)];
+    const palabrasDisponibles = listaPalabras.filter(p => !palabrasUsadasGlobalmente.has(p));
+
+if (palabrasDisponibles.length === 0) {
+  alert("¡No quedan palabras disponibles en esta categoría!");
+  return;
+}
+
+palabraSeleccionada = palabrasDisponibles[Math.floor(Math.random() * palabrasDisponibles.length)];
+
 
     puntaje = 10;
     letrasUsadas = [];
